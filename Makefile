@@ -8,8 +8,8 @@
 CFLAGS   = -g3 -Wall -Wextra -Iinclude
 LDFLAGS  =
 
-SRC      =  src/main.c \
-			src/op.c
+SRC      =	include/op.c \
+			src/main.c
 
 LSRC     = $(wildcard lib/*.c)
 

@@ -9,7 +9,10 @@ CFLAGS   = -g3 -Wall -Wextra -Iinclude
 LDFLAGS  =
 
 SRC      =	include/op.c \
-			src/main.c
+			src/main.c \
+			src/parser/args_parsing.c \
+			src/init.c \
+			src/free.c
 
 LSRC     = $(wildcard lib/*.c)
 

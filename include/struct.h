@@ -44,18 +44,22 @@ typedef struct {
     int ld_adress;
     int reg[REG_NUMBER];
     int pc;
+    int wait;
     int carry;
 } process_t;
 
 struct vm_s;
 typedef struct vm_s vm_t;
-typedef void (*op_functions)(vm_t *, process_t *);
+typedef void (*op_function_t)(vm_t *, process_t *);
 
 typedef struct vm_s {
     champion_t **champions;
+    int nb_champions;
+    process_t **process;
+    int nb_process;
     int dp_cyc;
     int *memory;
-    op_functions *op_func;
+    op_function_t *op_func;
 } vm_t;
 
 typedef struct {

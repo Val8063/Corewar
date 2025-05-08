@@ -16,5 +16,3 @@ void op_ldi(vm_t *vm, process_t *process)
 {
     return;
 }
-
-

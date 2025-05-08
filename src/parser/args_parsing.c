@@ -36,7 +36,8 @@ static void handle_dump_flag(parsed_t *args, char **argv, int *i, int argc)
         fprintf(stderr, "Erreur : -dump sans valeur\n");
         exit(84);
     }
-    args->dump_cycle = atoi(argv[++(*i)]);
+    (*i)++;
+    args->dump_cycle = atoi(argv[*i]);
     (*i)++;
 }
 

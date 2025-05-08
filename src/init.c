@@ -89,9 +89,9 @@ vm_t *init_vm(char **args)
 
     if (vm == NULL)
         return NULL;
-    normalize_champion(vm->nb_champions, vm->champions);
+    normalize_champions(vm->nb_champions, vm->champions);
     vm->process = init_process(vm);
-    vm->memory = init_memory(vm->process);
+    vm->memory = init_memory(vm);
     vm->op_func = init_op_tab();
     return vm;
 }

@@ -11,6 +11,8 @@
     #include <stdio.h>
     #include <stdarg.h>
     #include <string.h>
+    #include <stdint.h>
+    #include <unistd.h>
 
     #define MEM_SIZE (6 * 1024)
     #define IDX_MOD 512 /* modulo of the index < */

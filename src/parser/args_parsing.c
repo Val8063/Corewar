@@ -64,8 +64,6 @@ static void handle_champion(parsed_t *args, char *filename,
     new->file_name = strdup(filename);
     new->id = *tmp_id;
     new->ld_adress = *tmp_addr;
-    new->pc = 0;
-    new->carry = 0;
     args->champions[args->nb_champions] = new;
     args->nb_champions += 1;
     *tmp_id = -1;
@@ -94,11 +92,12 @@ static void parse_arg(parsed_t *args, int *i,
     exit(84);
 }
 
-int parse_args(int argc, char **argv, parsed_t *args)
+parsed_t *parse_args(int argc, char **argv)
 {
     int i = 1;
     int tmp_id = -1;
     int tmp_addr = -1;
+    parsed_t *args = malloc(sizeof(parsed_t));
 
     init_args_struct(args, argc, argv);
     while (i < argc) {

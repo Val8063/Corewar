@@ -6,6 +6,7 @@
 */
 
 #include "op.h"
+#include "corewar.h"
 
 static void my_putchar(char c)
 {

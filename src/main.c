@@ -26,16 +26,10 @@ static int display(int *memory)
 
 int main(int ac, char **av)
 {
-    parsed_t *args = malloc(sizeof(parsed_t));
-    vm_t *vm = NULL;
+    parsed_t *args = parse_args(ac, av);
+    vm_t *vm = init_vm(av);
 
-    if (args == NULL)
-        return 84;
-    parse_args(ac, av, args);
-    vm = init_vm(ac, av);
-    if (args == NULL)
-        return 84;
-    if (vm == NULL)
+    if (args == NULL || vm == NULL)
         return 84;
     display(vm->memory);
     free_vm(vm);

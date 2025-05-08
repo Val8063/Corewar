@@ -10,6 +10,8 @@
 #ifndef STRUCT_COREWAR
     #define STRUCT_COREWAR
 
+typedef uint8_t byte_t;
+
 typedef struct op_s {
     char *mnemonique;
     char nbr_args;
@@ -32,14 +34,28 @@ typedef struct {
     char *file_name;
     int id;
     int ld_adress;
-    int reg[REG_NUMBER];
-    int pc;
-    int carry;
+    char *name;
+    byte_t *code;
+    int code_size;
 } champion_t;
 
 typedef struct {
+    int id;
+    int ld_adress;
+    int reg[REG_NUMBER];
+    int pc;
+    int carry;
+} process_t;
+
+struct vm_s;
+typedef struct vm_s vm_t;
+typedef void (*op_functions)(vm_t *, process_t *);
+
+typedef struct vm_s {
     champion_t **champions;
+    int dp_cyc;
     int *memory;
+    op_functions *op_func;
 } vm_t;
 
 typedef struct {

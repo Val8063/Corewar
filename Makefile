@@ -8,7 +8,7 @@
 CFLAGS   = -g3 -Wall -Wextra -Iinclude
 LDFLAGS  =
 
-SRC      =	include/op.c \
+SRC      =	src/op.c \
 			src/main.c \
 			src/parser/args_parsing.c \
 			src/init.c \

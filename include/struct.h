@@ -29,7 +29,10 @@ typedef struct header_s {
 } header_t;
 
 typedef struct {
-    int *reg[REG_NUMBER];
+    char *file_name;
+    int id;
+    int ld_adress;
+    int reg[REG_NUMBER];
     int pc;
     int carry;
 } champion_t;
@@ -40,9 +43,12 @@ typedef struct {
 } vm_t;
 
 typedef struct {
-    int *id;
-    int *ld_adress;
-    char **file_name;
+    champion_t **champions;
+    int nb_champions;
+    int dump_cycle;
+    int max_champions;
+    int argc;
+    char **argv;
 } parsed_t;
 
 #endif

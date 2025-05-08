@@ -21,15 +21,23 @@ static int display(int *memory)
         }
         printf("\n");
     }
+    return 0;
 }
 
 int main(int ac, char **av)
 {
-    parsed_t *args = parse_args(ac - ARGS_SKIP, av + ARGS_SKIP);
-    vm_t *vm = init_vm(ac, av);
+    parsed_t *args = malloc(sizeof(parsed_t));
+    vm_t *vm = NULL;
 
-    if (vm == NULL || args == NULL)
+    if (args == NULL)
+        return 84;
+    parse_args(ac, av, args);
+    vm = init_vm(ac, av);
+    if (args == NULL)
+        return 84;
+    if (vm == NULL)
         return 84;
     display(vm->memory);
     free_vm(vm);
+    return 0;
 }

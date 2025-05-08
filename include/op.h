@@ -10,6 +10,7 @@
     #include <stdlib.h>
     #include <stdio.h>
     #include <stdarg.h>
+    #include <string.h>
 
     #define MEM_SIZE (6 * 1024)
     #define IDX_MOD 512 /* modulo of the index < */
@@ -64,7 +65,7 @@ indirect always relative (ld 1,r1 put what's in the address(1+pc) into r1
 /*
 ** Project macro
 */
-
+    #define MAX_CHAMPIONS 4
     #define ARGS_SKIP 1
 
 #endif

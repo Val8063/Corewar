@@ -13,6 +13,10 @@ int my_strlen(char const *str);
 int my_printf(const char *format, ...);
 int print_e(const char *format, ...);
 
+// PARSER
+parsed_t *parse_args(int ac, char **av, parsed_t *parsed);
+// int display_parsed_struct(parsed_t *parsed);
+
 // INIT
 vm_t *init_vm(int argc, char **argv);
 

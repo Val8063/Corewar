@@ -13,7 +13,9 @@ SRC      =	src/op.c \
 			src/parser/args_parsing.c \
 			src/init.c \
 			src/free.c \
+			src/worker/vm.c \
 			src/worker/memory.c \
+			src/worker/parse_params.c \
 			$(wildcard src/op_functions/*.c)
 
 LSRC     = $(wildcard lib/*.c)

@@ -9,9 +9,8 @@
 
 void free_vm(vm_t *vm)
 {
-    free(vm->memory);
+    free(vm->mem);
     free(vm->champions);
-    free(vm->op_func);
     free(vm->process);
     free(vm);
 }

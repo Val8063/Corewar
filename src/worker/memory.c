@@ -17,7 +17,7 @@
 **
 ** @warning La mémoire est entièrement circulaire (négatif et positif)
 */
-void write_memory(int *memory, int start_adress, int len, byte_t *element)
+void write_memory(byte_t *memory, int start_adress, int len, byte_t *element)
 {
     int adress = 0;
 

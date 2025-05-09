@@ -31,7 +31,7 @@ int main(int ac, char **av)
 
     if (args == NULL || vm == NULL)
         return 84;
-    display(vm->memory);
+    launch_vm(vm);
     free_vm(vm);
     return 0;
 }

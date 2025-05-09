@@ -8,43 +8,20 @@
 #include "corewar.h"
 #include "struct.h"
 
-static int *init_memory(vm_t *vm)
+static byte_t *init_memory(vm_t *vm)
 {
-    int *memory = malloc(sizeof(int) * MEM_SIZE);
+    byte_t *mem = malloc(sizeof(int) * MEM_SIZE);
     process_t *proc;
     champion_t *champ;
 
     for (int i = 0; i < MEM_SIZE; i++)
-        memory[i] = 0;
+        mem[i] = 0;
     for (int i = 0; i < vm->nb_process; i++) {
         proc = vm->process[i];
         champ = vm->champions[i];
-        write_memory(memory, proc->ld_adress, champ->code_size, champ->code);
+        write_memory(mem, proc->ld_adress, champ->code_size, champ->code);
     }
-    return memory;
-}
-
-static op_function_t *init_op_tab(void)
-{
-    op_function_t *op_func = malloc(sizeof(op_function_t) * 16);
-
-    op_func[0] = &op_live;
-    op_func[1] = &op_ld;
-    op_func[2] = &op_st;
-    op_func[3] = &op_add;
-    op_func[4] = &op_sub;
-    op_func[5] = &op_and;
-    op_func[6] = &op_or;
-    op_func[7] = &op_xor;
-    op_func[8] = &op_zjump;
-    op_func[9] = &op_ldi;
-    op_func[10] = &op_sti;
-    op_func[11] = &op_fork;
-    op_func[12] = &op_lld;
-    op_func[13] = &op_lldi;
-    op_func[14] = &op_lfork;
-    op_func[15] = &op_aff;
-    return op_func;
+    return mem;
 }
 
 static void normalize_champions(int nb_champs, champion_t **champs)
@@ -56,14 +33,15 @@ static void normalize_champions(int nb_champs, champion_t **champs)
     }
 }
 
-static process_t *create_process(champion_t *champs)
+static process_t *create_process(champion_t *champ)
 {
     process_t *process = malloc(sizeof(process_t));
 
+    process->src = champ;
     process->carry = 0;
-    process->id = champs->id;
-    process->ld_adress = champs->ld_adress;
-    process->pc = champs->ld_adress;
+    process->id = champ->id;
+    process->ld_adress = champ->ld_adress;
+    process->pc = champ->ld_adress;
     process->wait = -1;
     process->reg[0] = process->id;
     for (int i = 1; i < REG_NUMBER; i++) {
@@ -90,8 +68,10 @@ vm_t *init_vm(char **args)
     if (vm == NULL)
         return NULL;
     normalize_champions(vm->nb_champions, vm->champions);
+    vm->nb_alive = vm->nb_champions;
+    vm->actual_cycle = 0;
+    vm->cycle_to_die = CYCLE_TO_DIE;
     vm->process = init_process(vm);
-    vm->memory = init_memory(vm);
-    vm->op_func = init_op_tab();
+    vm->mem = init_memory(vm);
     return vm;
 }

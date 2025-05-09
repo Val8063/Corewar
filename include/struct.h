@@ -18,6 +18,8 @@ typedef struct op_s {
     args_type_t type[MAX_ARGS_NUMBER];
     char code;
     int nbr_cycles;
+    int has_index;
+    int has_coding_byte;
     char *comment;
 } op_t;
 
@@ -37,29 +39,37 @@ typedef struct {
     char *name;
     byte_t *code;
     int code_size;
+    int last_live;
 } champion_t;
 
 typedef struct {
+    champion_t *src;
     int id;
     int ld_adress;
     int reg[REG_NUMBER];
     int pc;
     int wait;
     int carry;
+    int params[MAX_ARGS_NUMBER];
+    int params_type[MAX_ARGS_NUMBER];
 } process_t;
 
 struct vm_s;
 typedef struct vm_s vm_t;
 typedef void (*op_function_t)(vm_t *, process_t *);
 
+extern const op_function_t op_func[];
+
 typedef struct vm_s {
     champion_t **champions;
     int nb_champions;
+    int nb_alive;
     process_t **process;
+    int actual_cycle;
     int nb_process;
     int dp_cyc;
-    int *memory;
-    op_function_t *op_func;
+    int cycle_to_die;
+    byte_t *mem;
 } vm_t;
 
 typedef struct {

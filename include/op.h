@@ -13,6 +13,7 @@
     #include <string.h>
     #include <stdint.h>
     #include <unistd.h>
+    #include <stdbool.h>
 
     #define MEM_SIZE (6 * 1024)
     #define IDX_MOD 512 /* modulo of the index < */
@@ -46,9 +47,9 @@ indirect always relative (ld 1,r1 put what's in the address(1+pc) into r1
 /*
 ** size (in bytes)
 */
-    #define IND_SIZE 2
     #define DIR_SIZE 4
-    #define REG_SIZE DIR_SIZE
+    #define IND_SIZE 2
+    #define REG_SIZE 1
 
 /*
 ** header

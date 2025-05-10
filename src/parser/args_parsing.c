@@ -66,14 +66,10 @@ static void handle_champion(parsed_t *args, char *filename,
     new->file_name = my_strdup(filename);
     new->id = *tmp_id;
     new->ld_adress = *tmp_addr;
-    new->pc = 0;
-    new->carry = 0;
     new->code = NULL;
     new->code_size = 0;
     new->last_live = 0;
     my_memset(&new->header, 0, sizeof(header_t));
-    for (int i = 0; i < REG_NUMBER; i++)
-        new->reg[i] = 0;
     args->champions[args->nb_champions] = new;
     args->nb_champions += 1;
     *tmp_id = -1;

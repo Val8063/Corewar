@@ -18,7 +18,7 @@ static byte_t *init_memory(vm_t *vm)
         mem[i] = 0;
     for (int i = 0; i < vm->nb_process; i++) {
         proc = vm->process[i];
-        champ = proc->champion;
+        champ = proc->src;
         write_memory(mem, proc->ld_adress, champ->code_size, champ->code);
     }
     return mem;
@@ -37,15 +37,14 @@ static process_t *create_process(champion_t *champ)
 {
     process_t *process = malloc(sizeof(process_t));
 
-    process->champion = champ;
+    process->src = champ;
     process->carry = 0;
     process->id = champ->id;
     process->ld_adress = champ->ld_adress;
     process->pc = champ->ld_adress;
     process->wait = -1;
-    process->alive = 0;
-    for (int i = 0; i < REG_NUMBER; i++) {
-        process->reg[i] = champ->reg[i];
+    for (int i = 1; i < REG_NUMBER; i++) {
+        process->reg[i] = 0;
     }
     process->reg[0] = process->id;
     return process;
@@ -64,16 +63,13 @@ static process_t **init_process(vm_t *vm)
     return process;
 }
 
-vm_t *init_vm(char **args)
+vm_t *init_vm(char **args, int argc)
 {
     vm_t *vm = malloc(sizeof(vm_t));
     parsed_t *parsed;
-    int argc = 0;
 
     if (vm == NULL)
         return NULL;
-    while (args[argc] != NULL)
-        argc++;
     parsed = parse_args(argc, args);
     if (parsed == NULL)
         return free(vm), NULL;

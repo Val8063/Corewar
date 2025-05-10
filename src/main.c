@@ -11,7 +11,7 @@
 int main(int ac, char **av)
 {
     parsed_t *args = parse_args(ac, av);
-    vm_t *vm = init_vm(av);
+    vm_t *vm = init_vm(av, ac);
 
     if (args == NULL || vm == NULL)
         return 84;

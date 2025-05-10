@@ -37,7 +37,7 @@ int parse_param(vm_t *vm, process_t *process);
 
 // INIT
 
-vm_t *init_vm(char **args);
+vm_t *init_vm(char **args, int argc);
 
 
 // FREE

@@ -33,25 +33,29 @@ typedef struct header_s {
 } header_t;
 
 typedef struct {
-    char *file_name;
-    int id;
-    int ld_adress;
-    char *name;
-    byte_t *code;
-    int code_size;
-    int last_live;
+    char *file_name;      // Nom du fichier du champion
+    header_t header;      // En-tête du champion
+    int id;               // ID du champion dans la VM
+    int ld_adress;        // Adresse de chargement
+    byte_t *code;         // Code binaire du champion
+    int code_size;        // Taille du code binaire
+    int pc;               // Program counter
+    int carry;            // Carry flag
+    int last_live;        // Dernier cycle où le champion a exécuté 'live'
+    int reg[REG_NUMBER];  // Registres
 } champion_t;
 
 typedef struct {
-    champion_t *src;
-    int id;
-    int ld_adress;
-    int reg[REG_NUMBER];
-    int pc;
-    int wait;
-    int carry;
-    int params[MAX_ARGS_NUMBER];
-    int params_type[MAX_ARGS_NUMBER];
+    champion_t *champion; // Le champion auquel ce processus appartient
+    int id;               // ID unique du processus
+    int ld_adress;        // Adresse de chargement
+    int reg[REG_NUMBER];  // Registres du processus
+    int pc;               // Program counter
+    int wait;             // Cycles à attendre avant la prochaine instruction
+    int carry;            // Carry flag
+    int params[MAX_ARGS_NUMBER];     // Paramètres de l'instruction en cours
+    int params_type[MAX_ARGS_NUMBER]; // Types des paramètres de l'instruction
+    int alive;            // Si le processus est encore vivant
 } process_t;
 
 struct vm_s;

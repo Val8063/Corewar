@@ -16,13 +16,21 @@ int my_strlen(char const *str);
 int my_getnbr(const char *str, int *result);
 int my_printf(const char *format, ...);
 int print_e(const char *format, ...);
+void *my_memcpy(void *des, const void *source, size_t size);
+void *my_memset(void *ptr, int value, size_t num);
+char *my_strdup(char *str);
+char *my_strcpy(char *dest, char const *src);
+int my_atoi(const char *str);
+void my_putchar(char c);
 int my_strcmp(char const *s1, char const *s2);
 int my_strncmp(const char *s1, const char *s2, int n);
 int bytes_to_int(const byte_t *bytes, int size);
 
 
 // PARSER
-
+int display_parsed_structure(parsed_t *parsed);  // Nom corrigé
+int parse_champion_file(const char *filename, champion_t *champion);
+int parse_all_champions(parsed_t *parsed);
 parsed_t *parse_args(int argc, char **argv);
 // int display_parsed_struct(parsed_t *parsed);
 int parse_param(vm_t *vm, process_t *process);
@@ -43,9 +51,8 @@ void launch_vm(vm_t *vm);
 
 
 // MEMORY
-
-void write_memory(byte_t *mem, int start_adress, int len, byte_t *element);
-
+void write_memory(byte_t *memory, int start_adress,
+    int len, byte_t *element);
 
 // OP_FUNCTIONS
 

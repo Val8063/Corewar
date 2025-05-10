@@ -71,6 +71,6 @@ void launch_vm(vm_t *vm)
         vm->actual_cycle++;
     }
     my_printf("The player %i(%s)has won.",
-            vm->process[0]->src->id, vm->process[0]->src->name);
+            vm->process[0]->champion->id, vm->process[0]->champion->file_name);
     return;
 }

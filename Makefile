@@ -11,6 +11,7 @@ LDFLAGS  =
 SRC      =	src/op.c \
 			src/main.c \
 			src/parser/args_parsing.c \
+			src/parser/champion_parser.c \
 			src/init.c \
 			src/free.c \
 			src/worker/vm.c \

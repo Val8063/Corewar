@@ -8,11 +8,6 @@
 #include "op.h"
 #include "corewar.h"
 
-static void my_putchar(char c)
-{
-    write(1, &c, 1);
-}
-
 static int my_putstr(char const *str)
 {
     int count = 0;

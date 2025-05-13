@@ -28,7 +28,9 @@ int bytes_to_int(const byte_t *bytes, int size);
 byte_t *int_to_bytes(int value, int size);
 
 
+
 // PARSER
+
 int display_parsed_structure(parsed_t *parsed);  // Nom corrigé
 int parse_champion_file(const char *filename, champion_t *champion);
 int parse_all_champions(parsed_t *parsed);
@@ -36,10 +38,14 @@ parsed_t *parse_args(int argc, char **argv);
 // int display_parsed_struct(parsed_t *parsed);
 int parse_param(vm_t *vm, process_t *process);
 void parse_indirect(vm_t *vm, process_t *proc);
+void parse_indirect_without_idx(vm_t *vm, process_t *proc);
+
+
 
 // INIT
 
 vm_t *init_vm(char **args, int argc);
+
 
 
 // FREE
@@ -47,15 +53,19 @@ vm_t *init_vm(char **args, int argc);
 void free_vm(vm_t *vm);
 
 
+
 // RUN
 
 void launch_vm(vm_t *vm);
 
 
+
 // MEMORY
+
 void write_memory(byte_t *memory, int start_adress,
     int len, byte_t *element);
 void dump_memory(byte_t *memory);
+
 
 
 // OP_FUNCTIONS

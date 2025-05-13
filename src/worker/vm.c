@@ -49,11 +49,6 @@ static void verify_live(vm_t *vm, champion_t **champs, int actual_cycle)
 static void display_params(vm_t *vm, process_t *proc)
 {
     my_printf("Player %i turn at cycle %i:\n", proc->id, vm->actual_cycle);
-    /*my_printf("\topcode : %i\n", vm->mem[proc->pc]);
-    for (int i = 0; i < op_tab[vm->mem[proc->pc] - 1].nbr_args; i++) {
-        my_printf("\ttype : %i\n", proc->params_type[i]);
-        my_printf("\tparam : %i\n", proc->params[i]);
-    }*/
 }
 
 static void turn(vm_t *vm, process_t *process)

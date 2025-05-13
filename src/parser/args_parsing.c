@@ -106,7 +106,7 @@ parsed_t *parse_args(int argc, char **argv)
     parsed_t *args = malloc(sizeof(parsed_t));
 
     if (!args) {
-        print_e(stderr, "Erreur : malloc échoué pour parsed_t\n");
+        print_e("Erreur : malloc échoué pour parsed_t\n");
         return NULL;
     }
     init_args_struct(args, argc, argv);

@@ -38,7 +38,8 @@ void op_fork(vm_t *vm, process_t *process)
     if (new_pc < 0)
         new_pc += MEM_SIZE;
     fork_process(vm, process, new_pc);
-    my_printf("\tfork: from pc %i with offset %i -> new pc %i\n",
+    if (ALL_LOG)
+        my_printf("\tfork: from pc %i with offset %i -> new pc %i\n",
         process->pc, offset, new_pc);
     process->pc += inst_size;
 }
@@ -52,7 +53,8 @@ void op_lfork(vm_t *vm, process_t *process)
     if (new_pc < 0)
         new_pc += MEM_SIZE;
     fork_process(vm, process, new_pc);
-    my_printf("\tfork: from pc %i with offset %i -> new pc %i\n",
+    if (ALL_LOG)
+        my_printf("\tfork: from pc %i with offset %i -> new pc %i\n",
         process->pc, offset, new_pc);
     process->pc += inst_size;
 }

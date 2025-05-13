@@ -30,7 +30,8 @@ void op_and(vm_t *vm, process_t *process)
     process->reg[arg3 - 1] = result & 0xFF;
     process->carry = (result == 0);
     process->pc += inst_size;
-    my_printf("\tand: entre %i et %i, result : %i dans r%i",
+    if (ALL_LOG)
+        my_printf("\tand: entre %i et %i, result : %i dans r%i",
         value1, value2, result, arg3);
 }
 
@@ -47,7 +48,8 @@ void op_or(vm_t *vm, process_t *process)
     process->reg[arg3 - 1] = result & 0xFF;
     process->carry = (result == 0);
     process->pc += inst_size;
-    my_printf("\tor: entre %i et %i, result : %i dans r%i",
+    if (ALL_LOG)
+        my_printf("\tor: entre %i et %i, result : %i dans r%i",
         value1, value2, result, arg3);
 }
 
@@ -64,6 +66,7 @@ void op_xor(vm_t *vm, process_t *process)
     process->reg[arg3 - 1] = result & 0xFF;
     process->carry = (result == 0);
     process->pc += inst_size;
-    my_printf("\txor: entre %i et %i, result : %i dans r%i",
+    if (ALL_LOG)
+        my_printf("\txor: entre %i et %i, result : %i dans r%i",
         value1, value2, result, arg3);
 }

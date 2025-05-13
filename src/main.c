@@ -12,12 +12,15 @@
 void dump_memory(byte_t *memory)
 {
     int i = 0;
+    char *hexa;
 
     if (memory == NULL)
         return;
     while (i < MEM_SIZE) {
         for (int e = 0; (e < 32) && i < MEM_SIZE; e++) {
-            my_printf("%i", memory[i]);
+            hexa = convert_to_16(memory[i]);
+            my_printf("%s ", hexa);
+            free(hexa);
             i++;
         }
         my_printf("\n");

@@ -48,7 +48,8 @@ static void verify_live(vm_t *vm, champion_t **champs, int actual_cycle)
 
 static void display_params(vm_t *vm, process_t *proc)
 {
-    my_printf("Player %i turn at cycle %i:\n", proc->id, vm->actual_cycle);
+    if (ALL_LOG)
+        my_printf("Player %i turn at cycle %i:\n", proc->id, vm->actual_cycle);
 }
 
 static void turn(vm_t *vm, process_t *process)
@@ -69,12 +70,13 @@ static void turn(vm_t *vm, process_t *process)
 
 void launch_vm(vm_t *vm)
 {
-    dump_memory(vm->mem);
     while (vm->nb_alive > 1) {
         if (vm->actual_cycle % vm->cycle_to_die == 0)
             verify_live(vm, vm->champions, vm->actual_cycle);
         for (int i = 0; i < vm->nb_process; i++)
             turn(vm, vm->process[i]);
+        if (vm->dp_cyc != -1 && vm->actual_cycle % vm->dp_cyc == 0)
+            dump_memory(vm->mem);
         vm->actual_cycle++;
     }
     my_printf("The player %i(%s) has won.\n",

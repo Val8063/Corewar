@@ -26,7 +26,8 @@ void op_ld(vm_t *vm, process_t *process)
         process->reg[process->params[1] - 1] = process->params[0];
         process->carry = (process->params[0] == 0);
     }
-    my_printf("\tld: %i load dans r%i\n modification carry : %i\n",
+    if (ALL_LOG)
+        my_printf("\tld: %i load dans r%i\n modification carry : %i\n",
         process->params[0], process->params[1] - 1, process->carry);
     process->pc += inst_size;
 }
@@ -48,7 +49,8 @@ void op_ldi(vm_t *vm, process_t *process)
     result = vm->mem[addr];
     process->reg[reg_id - 1] = result;
     process->carry = (result == 0);
-    my_printf("\tldi: (%i + %i) -> addr %i, value %i into r%i, carry %i\n",
+    if (ALL_LOG)
+        my_printf("\tldi: (%i + %i) -> addr %i, value %i into r%i, carry %i\n",
         value1, value2, addr, result, reg_id, process->carry);
     process->pc += inst_size;
 }

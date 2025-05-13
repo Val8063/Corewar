@@ -51,7 +51,8 @@ void op_sti(vm_t *vm, process_t *process)
         addr += MEM_SIZE;
     vm->mem[addr] = reg_value & 0xFF;
     process->carry = (reg_value == 0);
-    my_printf("\tsti: r%i (%i) -> addr (%i + %i) = %i, write %i, carry %i\n",
+    if (ALL_LOG)
+        my_printf("\tsti: r%i (%i) -> addr (%i + %i) = %i, wr %i, carry %i\n",
         process->params[0], reg_value, value2, value3, addr, reg_value,
         process->carry);
     process->pc += inst_size;

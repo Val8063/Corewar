@@ -79,7 +79,7 @@ static void handle_champion(parsed_t *args, char *filename,
         print_e("Erreur : malloc échoué pour champion\n");
         exit(84);
     }
-    if (*tmp_id == -1)
+    if (*tmp_id == -1 || *tmp_id < 0)
         new->id = find_first_available_id(args);
     else
         new->id = *tmp_id;
@@ -92,6 +92,7 @@ static void handle_champion(parsed_t *args, char *filename,
     args->champions[args->nb_champions] = new;
     args->nb_champions += 1;
     *tmp_addr = -1;
+    *tmp_id = -1;
 }
 
 static void parse_arg(parsed_t *args, int *i,

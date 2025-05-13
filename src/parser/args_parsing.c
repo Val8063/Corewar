@@ -54,6 +54,22 @@ static void handle_flag_value(parsed_t *args, int *dest,
     (*i)++;
 }
 
+static int find_first_available_id(parsed_t *args)
+{
+    int used_ids[MAX_CHAMPIONS] = {0};
+
+    for (int i = 0; i < args->nb_champions; i++) {
+        if (args->champions[i]->id > 0 &&
+        args->champions[i]->id <= MAX_CHAMPIONS)
+            used_ids[args->champions[i]->id - 1] = 1;
+    }
+    for (int i = 0; i < MAX_CHAMPIONS; i++) {
+        if (used_ids[i] == 0)
+            return i + 1;
+    }
+    return -1;
+}
+
 static void handle_champion(parsed_t *args, char *filename,
     int *tmp_id, int *tmp_addr)
 {
@@ -63,8 +79,11 @@ static void handle_champion(parsed_t *args, char *filename,
         print_e("Erreur : malloc échoué pour champion\n");
         exit(84);
     }
+    if (*tmp_id == -1)
+        new->id = find_first_available_id(args);
+    else
+        new->id = *tmp_id;
     new->file_name = my_strdup(filename);
-    new->id = *tmp_id;
     new->ld_adress = *tmp_addr;
     new->code = NULL;
     new->code_size = 0;
@@ -72,7 +91,6 @@ static void handle_champion(parsed_t *args, char *filename,
     my_memset(&new->header, 0, sizeof(header_t));
     args->champions[args->nb_champions] = new;
     args->nb_champions += 1;
-    *tmp_id = -1;
     *tmp_addr = -1;
 }
 

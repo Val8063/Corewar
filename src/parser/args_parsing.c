@@ -113,5 +113,6 @@ parsed_t *parse_args(int argc, char **argv)
     while (i < argc) {
         parse_arg(args, &i, &tmp_id, &tmp_addr);
     }
+    parse_all_champions(args);
     return args;
 }

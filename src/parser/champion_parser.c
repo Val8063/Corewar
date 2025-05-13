@@ -33,14 +33,13 @@ static int read_magic(int fd, header_t *header)
     unsigned char buffer[4];
 
     if (read(fd, buffer, 4) != 4) {
-        fprintf(stderr, "Erreur : Impossible de lire le magic number\n");
+        print_e("Erreur : Impossible de lire le magic number\n");
         return -1;
     }
     header->magic = (buffer[0] << 24) | (buffer[1] << 16) |
     (buffer[2] << 8) | buffer[3];
     if (header->magic != COREWAR_EXEC_MAGIC) {
-        fprintf(stderr,
-            "Erreur : Magic number invalide (0x%x)\n", header->magic);
+        print_e("Erreur : Magic number invalide (0x%x)\n", header->magic);
         return -1;
     }
     return 0;
@@ -55,7 +54,7 @@ static int read_magic(int fd, header_t *header)
 static int read_program_name(int fd, header_t *header)
 {
     if (read(fd, header->prog_name, PROG_NAME_LENGTH) != PROG_NAME_LENGTH) {
-        fprintf(stderr, "Erreur : Impossible de lire le nom du programme\n");
+        print_e("Erreur : Impossible de lire le nom du programme\n");
         return -1;
     }
     header->prog_name[PROG_NAME_LENGTH] = '\0';
@@ -72,12 +71,12 @@ static int skip_padding(int fd)
     unsigned char padding[4];
 
     if (read(fd, padding, 4) != 4) {
-        fprintf(stderr, "Erreur : Impossible de lire le padding\n");
+        print_e("Erreur : Impossible de lire le padding\n");
         return -1;
     }
     for (int i = 0; i < 4; i++) {
         if (padding[i] != 0) {
-            fprintf(stderr, "Avertissement : Padding non nul détecté\n");
+            print_e("Avertissement : Padding non nul détecté\n");
             break;
         }
     }
@@ -95,13 +94,13 @@ static int read_program_size(int fd, header_t *header)
     unsigned char buffer[4];
 
     if (read(fd, buffer, 4) != 4) {
-        fprintf(stderr, "Erreur: Impossible de lire la taille du programme\n");
+        print_e("Erreur: Impossible de lire la taille du programme\n");
         return -1;
     }
     header->prog_size = (buffer[0] << 24) | (buffer[1] << 16) |
     (buffer[2] << 8) | buffer[3];
     if (header->prog_size <= 0 || header->prog_size > MEM_SIZE) {
-        fprintf(stderr, "Erreur : Taille du programme invalide\n");
+        print_e("Erreur : Taille du programme invalide\n");
         return -1;
     }
     return 0;
@@ -116,7 +115,7 @@ static int read_program_size(int fd, header_t *header)
 static int read_comment(int fd, header_t *header)
 {
     if (read(fd, header->comment, COMMENT_LENGTH) != COMMENT_LENGTH) {
-        fprintf(stderr, "Erreur : Impossible de lire le commentaire\n");
+        print_e("Erreur : Impossible de lire le commentaire\n");
         return -1;
     }
     header->comment[COMMENT_LENGTH] = '\0';
@@ -158,12 +157,11 @@ static unsigned char *read_instructions(int fd, int prog_size)
     unsigned char *instructions = malloc(prog_size);
 
     if (!instructions) {
-        fprintf(stderr,
-            "Erreur: Échec d'allocation mémoire pour les instructions\n");
+        print_e("Erreur: Échec d'allocation mémoire pour les instructions\n");
         return NULL;
     }
     if (read(fd, instructions, prog_size) != prog_size) {
-        fprintf(stderr, "Erreur : Impossible de lire les instructions\n");
+        print_e("Erreur : Impossible de lire les instructions\n");
         free(instructions);
         return NULL;
     }
@@ -183,7 +181,7 @@ int parse_champion_file(const char *filename, champion_t *champion)
     unsigned char *instructions = NULL;
 
     if (fd == -1) {
-        return fprintf(stderr, "Erreur : Impossible d'ouvrir le fichier '%s'\n"
+        return print_e("Erreur : Impossible d'ouvrir le fichier '%s'\n"
         , filename), -1;
     }
     if (read_header(fd, &header) == -1)
@@ -213,15 +211,15 @@ int parse_all_champions(parsed_t *parsed)
     for (int i = 0; i < parsed->nb_champions; i++) {
         champ = parsed->champions[i];
         if (parse_champion_file(champ->file_name, champ) == -1) {
-            fprintf(stderr, "Erreur lors du parsing du champion: %s\n",
+            print_e("Erreur lors du parsing du champion: %s\n",
             champ->file_name);
         } else {
             success_count++;
         }
     }
     if (success_count < parsed->nb_champions)
-        fprintf(stderr, "Certains champions n'ont pas pu être chargés\n");
+        print_e("Certains champions n'ont pas pu être chargés\n");
     if (success_count < 2)
-        return fprintf(stderr, "Erreur: Il faut au moins 2 champions\n"), -1;
+        return print_e("Erreur: Il faut au moins 2 champions\n"), -1;
     return 0;
 }

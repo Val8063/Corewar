@@ -10,7 +10,7 @@
 
 int is_cor_file(const char *filename)
 {
-    size_t len = strlen(filename);
+    size_t len = my_strlen(filename);
 
     if (len < 5)
         return 0;
@@ -21,7 +21,7 @@ static void init_args_struct(parsed_t *args, int argc, char **argv)
 {
     args->champions = malloc(sizeof(champion_t) * MAX_CHAMPIONS);
     if (!args->champions) {
-        fprintf(stderr, "Erreur : malloc échoué pour champions\n");
+        print_e("Erreur : malloc échoué pour champions\n");
         exit(84);
     }
     args->nb_champions = 0;
@@ -34,7 +34,7 @@ static void init_args_struct(parsed_t *args, int argc, char **argv)
 static void handle_dump_flag(parsed_t *args, char **argv, int *i, int argc)
 {
     if (*i + 1 >= argc) {
-        fprintf(stderr, "Erreur : -dump sans valeur\n");
+        print_e("Erreur : -dump sans valeur\n");
         exit(84);
     }
     (*i)++;
@@ -46,7 +46,7 @@ static void handle_flag_value(parsed_t *args, int *dest,
     int *i, const char *flag)
 {
     if (*i + 1 >= args->argc) {
-        fprintf(stderr, "Erreur : %s sans valeur\n", flag);
+        print_e("Erreur : %s sans valeur\n", flag);
         exit(84);
     }
     (*i)++;
@@ -60,7 +60,7 @@ static void handle_champion(parsed_t *args, char *filename,
     champion_t *new = malloc(sizeof(champion_t));
 
     if (!new) {
-        fprintf(stderr, "Erreur : malloc échoué pour champion\n");
+        print_e("Erreur : malloc échoué pour champion\n");
         exit(84);
     }
     new->file_name = my_strdup(filename);
@@ -87,14 +87,14 @@ static void parse_arg(parsed_t *args, int *i,
         return handle_flag_value(args, tmp_addr, i, "-a");
     if (is_cor_file(args->argv[*i])) {
         if (args->nb_champions >= args->max_champions) {
-            fprintf(stderr, "Trop de champions\n");
+            print_e("Trop de champions\n");
             exit(84);
         }
         handle_champion(args, args->argv[*i], tmp_id, tmp_addr);
         (*i)++;
         return;
     }
-    fprintf(stderr, "Argument inconnu ou invalide : %s\n", args->argv[*i]);
+    print_e("Argument inconnu ou invalide : %s\n", args->argv[*i]);
     exit(84);
 }
 
@@ -106,7 +106,7 @@ parsed_t *parse_args(int argc, char **argv)
     parsed_t *args = malloc(sizeof(parsed_t));
 
     if (!args) {
-        fprintf(stderr, "Erreur : malloc échoué pour parsed_t\n");
+        print_e(stderr, "Erreur : malloc échoué pour parsed_t\n");
         return NULL;
     }
     init_args_struct(args, argc, argv);

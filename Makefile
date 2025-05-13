@@ -16,6 +16,7 @@ SRC      =	src/op.c \
 			src/free.c \
 			src/worker/vm.c \
 			src/worker/memory.c \
+			src/worker/parse_indirect.c \
 			src/worker/parse_params.c \
 			$(wildcard src/op_functions/*.c)
 

@@ -6,7 +6,24 @@
 */
 
 #include "struct.h"
+#include "op.h"
 #include "corewar.h"
+
+void dump_memory(byte_t *memory)
+{
+    int i = 0;
+
+    if (memory == NULL)
+        return;
+    while (i < MEM_SIZE) {
+        for (int e = 0; (e < 32) && i < MEM_SIZE; e++) {
+            my_printf("%i", memory[i]);
+            i++;
+        }
+        my_printf("\n");
+    }
+    return;
+}
 
 int main(int ac, char **av)
 {

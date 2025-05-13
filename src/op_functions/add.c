@@ -9,5 +9,15 @@
 
 void op_add(vm_t *vm, process_t *process)
 {
-    return;
+    int inst_size = parse_param(vm, process);
+    int reg1 = process->reg[process->params[0] - 1];
+    int reg2 = process->reg[process->params[1] - 1];
+    int result = reg1 + reg2;
+
+    process->reg[process->params[2] - 1] = result & 0xFF;
+    process->carry = (result == 0);
+    my_printf("\tadd: r%i %i + r%i %i = r%i %i",
+        process->params[0], reg1, process->params[1], reg2, process->params[2],
+        process->reg[process->params[2] - 1]);
+    process->pc += inst_size;
 }

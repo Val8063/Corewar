@@ -11,7 +11,6 @@ static void delete_process(vm_t *vm, int ind)
 {
     int i = 0;
 
-    free(vm->process[ind]);
     for (i = ind; i < vm->nb_process - 1; i++)
         vm->process[i] = vm->process[i + 1];
     vm->nb_process--;
@@ -39,20 +38,32 @@ static void verify_live(vm_t *vm, champion_t **champs, int actual_cycle)
         if (min_cycle > last_live) {
             kill_champ(vm, champs[i]->id);
             vm->nb_alive -= 1;
+            my_printf("min_cycle : %i\n", min_cycle);
+            my_printf("actual cycle : %i\n", vm->actual_cycle);
+            my_printf("The player %i(%s) is dead. (last live : %i)\n",
+            champs[i]->id, champs[i]->header.prog_name, last_live);
         }
     }
 }
 
+static void display_params(vm_t *vm, process_t *proc)
+{
+    my_printf("Player %i turn at cycle %i:\n", proc->id, vm->actual_cycle);
+    /*my_printf("\topcode : %i\n", vm->mem[proc->pc]);
+    for (int i = 0; i < op_tab[vm->mem[proc->pc] - 1].nbr_args; i++) {
+        my_printf("\ttype : %i\n", proc->params_type[i]);
+        my_printf("\tparam : %i\n", proc->params[i]);
+    }*/
+}
+
 static void turn(vm_t *vm, process_t *process)
 {
-    int opcode = vm->mem[process->pc];
-    int offset = 0;
+    int opcode = vm->mem[process->pc % MEM_SIZE];
 
     if (process->wait == 0) {
         if (opcode >= 1 && opcode <= 16) {
-            offset = parse_param(vm, process);
+            display_params(vm, process);
             op_func[opcode - 1](vm, process);
-            process->pc += offset;
         }
     }
     if (process->wait == -1) {
@@ -63,14 +74,15 @@ static void turn(vm_t *vm, process_t *process)
 
 void launch_vm(vm_t *vm)
 {
-    while (vm->nb_alive <= 1) {
+    dump_memory(vm->mem);
+    while (vm->nb_alive > 1) {
         if (vm->actual_cycle % vm->cycle_to_die == 0)
             verify_live(vm, vm->champions, vm->actual_cycle);
         for (int i = 0; i < vm->nb_process; i++)
             turn(vm, vm->process[i]);
         vm->actual_cycle++;
     }
-    my_printf("The player %i(%s)has won.",
-            vm->process[0]->src->id, vm->process[0]->src->file_name);
+    my_printf("The player %i(%s) has won.\n",
+            vm->process[0]->src->id, vm->process[0]->src->header.prog_name);
     return;
 }

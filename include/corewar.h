@@ -25,6 +25,7 @@ void my_putchar(char c);
 int my_strcmp(char const *s1, char const *s2);
 int my_strncmp(const char *s1, const char *s2, int n);
 int bytes_to_int(const byte_t *bytes, int size);
+byte_t *int_to_bytes(int value, int size);
 
 
 // PARSER
@@ -34,6 +35,7 @@ int parse_all_champions(parsed_t *parsed);
 parsed_t *parse_args(int argc, char **argv);
 // int display_parsed_struct(parsed_t *parsed);
 int parse_param(vm_t *vm, process_t *process);
+void parse_indirect(vm_t *vm, process_t *proc);
 
 // INIT
 
@@ -53,6 +55,8 @@ void launch_vm(vm_t *vm);
 // MEMORY
 void write_memory(byte_t *memory, int start_adress,
     int len, byte_t *element);
+void dump_memory(byte_t *memory);
+
 
 // OP_FUNCTIONS
 

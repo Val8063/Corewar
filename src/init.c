@@ -28,7 +28,7 @@ static void normalize_champions(int nb_champs, champion_t **champs)
 {
     for (int i = 0; i < nb_champs; i++) {
         if (champs[i]->ld_adress == -1) {
-            champs[i]->ld_adress = (MEM_SIZE % nb_champs) * i;
+            champs[i]->ld_adress = (MEM_SIZE / nb_champs) * i;
         }
     }
 }
@@ -82,5 +82,7 @@ vm_t *init_vm(char **args, int argc)
     vm->cycle_to_die = CYCLE_TO_DIE;
     vm->process = init_process(vm);
     vm->mem = init_memory(vm);
+    my_printf("Nombre de champions : %i\n", vm->nb_champions);
+    my_printf("Nombre de process : %i\n", vm->nb_process);
     return vm;
 }

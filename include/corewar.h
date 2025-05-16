@@ -10,10 +10,6 @@
 #ifndef COREWAR_FUNC
     #define COREWAR_FUNC
 
-// CORE MACRO
-
-    #define ALL_LOG 0
-
 // LIB
 
 int my_strlen(char const *str);
@@ -30,8 +26,7 @@ int my_strcmp(char const *s1, char const *s2);
 int my_strncmp(const char *s1, const char *s2, int n);
 int bytes_to_int(const byte_t *bytes, int size);
 byte_t *int_to_bytes(int value, int size);
-char *convert_to_16(int quotient);
-
+void convert_to_16(int quotient, char *buffer);
 
 // PARSER
 

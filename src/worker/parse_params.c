@@ -7,6 +7,15 @@
 
 #include "corewar.h"
 
+static int check_param_types(int op_code, process_t *process)
+{
+    for (int i = 0; i < op_tab[op_code].nbr_args; ++i) {
+        if (!(op_tab[op_code].type[i] & process->params_type[i]))
+            return 0;
+    }
+    return 1;
+}
+
 static void decrypt_coding_byte(vm_t *vm, process_t *process)
 {
     int op_code = vm->mem[process->pc % MEM_SIZE] - 1;
@@ -41,8 +50,12 @@ int parse_param(vm_t *vm, process_t *process)
     int size;
     int offset = 1 + op_tab[op_code].has_coding_byte;
 
+    if ((op_code + 1) < 1 || 16 < (op_code + 1))
+        return -1;
     if (op_tab[op_code].has_coding_byte == 1) {
-        decrypt_coding_byte(vm, process);
+    decrypt_coding_byte(vm, process);
+        if (!check_param_types(op_code, process))
+            return -1;
     } else {
         process->params_type[0] = T_DIR;
     }

@@ -23,8 +23,10 @@ void write_memory(byte_t *memory, int start_adress, int len, byte_t *element)
 
     for (int i = 0; i < len; i++) {
         adress = (start_adress + i) % MEM_SIZE;
+        my_printf("start addr: %i\n", start_adress);
         if (adress < 0)
             adress += MEM_SIZE;
         memory[adress] = element[i];
+        my_printf("wr addr : %i\n", adress);
     }
 }

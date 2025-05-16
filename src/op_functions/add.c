@@ -16,8 +16,8 @@ void op_add(vm_t *vm, process_t *process)
 
     process->reg[process->params[2] - 1] = result & 0xFF;
     process->carry = (result == 0);
-    if (ALL_LOG)
-        my_printf("\tadd: r%i %i + r%i %i = r%i %i",
+    if (vm->log)
+        my_printf("\tadd: r%i %i + r%i %i = r%i %i\n",
         process->params[0], reg1, process->params[1], reg2, process->params[2],
         process->reg[process->params[2] - 1]);
     process->pc += inst_size;

@@ -16,7 +16,7 @@ void op_sub(vm_t *vm, process_t *process)
 
     process->reg[process->params[2] - 1] = result & 0xFF;
     process->carry = (result == 0);
-    if (ALL_LOG)
+    if (vm->log)
         my_printf("\tsub: r%i %i - r%i %i = r%i %i",
         process->params[0], reg1, process->params[1], reg2, process->params[2],
         process->reg[process->params[2] - 1]);

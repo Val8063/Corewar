@@ -10,7 +10,7 @@
 void op_live(vm_t *vm, process_t *process)
 {
     int inst_size = parse_param(vm, process);
-    int id = process->id;
+    int id = process->params[0];
     static int nbr_live = 0;
 
     process->src->last_live = vm->actual_cycle;

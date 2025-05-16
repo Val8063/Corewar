@@ -68,6 +68,7 @@ typedef struct vm_s {
     int actual_cycle;
     int nb_process;
     int dp_cyc;
+    int log;
     int cycle_to_die;
     byte_t *mem;
 } vm_t;
@@ -76,6 +77,7 @@ typedef struct {
     champion_t **champions;
     int nb_champions;
     int dump_cycle;
+    int log;
     int max_champions;
     int argc;
     char **argv;

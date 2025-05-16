@@ -48,7 +48,7 @@ static void verify_live(vm_t *vm, champion_t **champs, int actual_cycle)
 
 static void display_params(vm_t *vm, process_t *proc)
 {
-    if (ALL_LOG)
+    if (vm->log)
         my_printf("Player %i turn at cycle %i:\n", proc->id, vm->actual_cycle);
 }
 
@@ -62,8 +62,14 @@ static void turn(vm_t *vm, process_t *process)
             op_func[opcode - 1](vm, process);
         }
     }
-    if (process->wait == -1) {
-        process->wait = op_tab[vm->mem[process->pc % MEM_SIZE] + 1].nbr_cycles;
+    if (process->wait == -1 && 1 <= opcode && opcode <= 16) {
+        process->wait = op_tab[opcode - 1].nbr_cycles;
+        if (vm->log && 0 < opcode && opcode <= 16) {
+            my_printf("Player %i waiting %i for (%i)%s\n",
+                process->src->id, process->wait,
+                vm->mem[process->pc % MEM_SIZE],
+                op_tab[vm->mem[process->pc % MEM_SIZE] - 1].mnemonique);
+        }
     }
     process->wait -= 1;
 }

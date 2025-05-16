@@ -3,4 +3,4 @@ corewar
 .test
 .vscode
 src/parser/disp_struct.c
-src/main.c
+result

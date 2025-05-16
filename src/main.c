@@ -12,15 +12,14 @@
 void dump_memory(byte_t *memory)
 {
     int i = 0;
-    char *hexa;
+    char hexa[3];
 
     if (memory == NULL)
         return;
     while (i < MEM_SIZE) {
         for (int e = 0; (e < 32) && i < MEM_SIZE; e++) {
-            hexa = convert_to_16(memory[i]);
-            my_printf("%s ", hexa);
-            free(hexa);
+            convert_to_16(memory[i], hexa);
+            my_printf("%s", hexa);
             i++;
         }
         my_printf("\n");
@@ -30,12 +29,13 @@ void dump_memory(byte_t *memory)
 
 int main(int ac, char **av)
 {
-    parsed_t *args = parse_args(ac, av);
     vm_t *vm = init_vm(av, ac);
 
-    if (args == NULL || vm == NULL)
+    if (vm == NULL)
         return 84;
+    dump_memory(vm->mem);
     launch_vm(vm);
+    dump_memory(vm->mem);
     free_vm(vm);
     return 0;
 }

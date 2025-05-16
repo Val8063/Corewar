@@ -22,6 +22,8 @@ static int my_put_nbr(int nb)
 {
     int count = 0;
 
+    if (!nb)
+        return 0;
     if (nb < 0) {
         my_putchar('-');
         my_put_nbr(- nb);

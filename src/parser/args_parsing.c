@@ -17,41 +17,39 @@ int is_cor_file(const char *filename)
     return my_strcmp(filename + len - 4, ".cor") == 0;
 }
 
-static void init_args_struct(parsed_t *args, int argc, char **argv)
+static int init_args_struct(parsed_t *args, int argc, char **argv)
 {
     args->champions = malloc(sizeof(champion_t) * MAX_CHAMPIONS);
-    if (!args->champions) {
-        print_e("Erreur : malloc échoué pour champions\n");
-        exit(84);
-    }
+    if (!args->champions)
+        return print_e("Erreur : malloc échoué pour champions\n"), -1;
     args->nb_champions = 0;
     args->dump_cycle = -1;
     args->max_champions = MAX_CHAMPIONS;
+    args->log = 0;
     args->argc = argc;
     args->argv = argv;
+    return 1;
 }
 
-static void handle_dump_flag(parsed_t *args, char **argv, int *i, int argc)
+static int handle_dump_flag(parsed_t *args, char **argv, int *i, int argc)
 {
-    if (*i + 1 >= argc) {
-        print_e("Erreur : -dump sans valeur\n");
-        exit(84);
-    }
+    if (*i + 1 >= argc)
+        return print_e("Erreur : -dump sans valeur\n"), -1;
     (*i)++;
     args->dump_cycle = my_atoi(argv[*i]);
     (*i)++;
+    return 1;
 }
 
-static void handle_flag_value(parsed_t *args, int *dest,
+static int handle_flag_value(parsed_t *args, int *dest,
     int *i, const char *flag)
 {
-    if (*i + 1 >= args->argc) {
-        print_e("Erreur : %s sans valeur\n", flag);
-        exit(84);
-    }
+    if (*i + 1 >= args->argc)
+        return print_e("Erreur : %s sans valeur\n", flag), -1;
     (*i)++;
     *dest = my_atoi(args->argv[*i]);
     (*i)++;
+    return 1;
 }
 
 static int find_first_available_id(parsed_t *args)
@@ -70,15 +68,13 @@ static int find_first_available_id(parsed_t *args)
     return -1;
 }
 
-static void handle_champion(parsed_t *args, char *filename,
+static int handle_champion(parsed_t *args, char *filename,
     int *tmp_id, int *tmp_addr)
 {
     champion_t *new = malloc(sizeof(champion_t));
 
-    if (!new) {
-        print_e("Erreur : malloc échoué pour champion\n");
-        exit(84);
-    }
+    if (!new)
+        return print_e("Erreur : malloc échoué pour champion\n"), -1;
     if (*tmp_id == -1 || *tmp_id < 0)
         new->id = find_first_available_id(args);
     else
@@ -93,9 +89,10 @@ static void handle_champion(parsed_t *args, char *filename,
     args->nb_champions += 1;
     *tmp_addr = -1;
     *tmp_id = -1;
+    return 1;
 }
 
-static void parse_arg(parsed_t *args, int *i,
+static int parse_arg(parsed_t *args, int *i,
     int *tmp_id, int *tmp_addr)
 {
     if (my_strcmp(args->argv[*i], "-dump") == 0)
@@ -104,17 +101,19 @@ static void parse_arg(parsed_t *args, int *i,
         return handle_flag_value(args, tmp_id, i, "-n");
     if (my_strcmp(args->argv[*i], "-a") == 0)
         return handle_flag_value(args, tmp_addr, i, "-a");
+    if (my_strcmp(args->argv[*i], "-log") == 0) {
+        (*i)++;
+        args->log = 1;
+        return 1;
+    }
     if (is_cor_file(args->argv[*i])) {
-        if (args->nb_champions >= args->max_champions) {
-            print_e("Trop de champions\n");
-            exit(84);
-        }
+        if (args->nb_champions >= args->max_champions)
+            return print_e("Trop de champions\n"), -1;
         handle_champion(args, args->argv[*i], tmp_id, tmp_addr);
         (*i)++;
-        return;
+        return 1;
     }
-    print_e("Argument inconnu ou invalide : %s\n", args->argv[*i]);
-    exit(84);
+    return print_e("Argument inconnu ou invalide : %s\n", args->argv[*i]), -1;
 }
 
 parsed_t *parse_args(int argc, char **argv)
@@ -128,10 +127,13 @@ parsed_t *parse_args(int argc, char **argv)
         print_e("Erreur : malloc échoué pour parsed_t\n");
         return NULL;
     }
-    init_args_struct(args, argc, argv);
+    if (init_args_struct(args, argc, argv) == -1)
+        return NULL;
     while (i < argc) {
-        parse_arg(args, &i, &tmp_id, &tmp_addr);
+        if (parse_arg(args, &i, &tmp_id, &tmp_addr) == -1)
+            return NULL;
     }
-    parse_all_champions(args);
+    if (parse_all_champions(args) == -1)
+        return NULL;
     return args;
 }

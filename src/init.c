@@ -14,8 +14,9 @@ static byte_t *init_memory(vm_t *vm)
     process_t *proc;
     champion_t *champ;
 
-    for (int i = 0; i < MEM_SIZE; i++)
-        mem[i] = 0;
+    if (!mem)
+        return NULL;
+    my_memset(mem, 0, MEM_SIZE);
     for (int i = 0; i < vm->nb_process; i++) {
         proc = vm->process[i];
         champ = proc->src;
@@ -43,10 +44,10 @@ static process_t *create_process(champion_t *champ)
     process->ld_adress = champ->ld_adress;
     process->pc = champ->ld_adress;
     process->wait = -1;
+    process->reg[0] = process->id;
     for (int i = 1; i < REG_NUMBER; i++) {
         process->reg[i] = 0;
     }
-    process->reg[0] = process->id;
     return process;
 }
 
@@ -66,17 +67,17 @@ static process_t **init_process(vm_t *vm)
 vm_t *init_vm(char **args, int argc)
 {
     vm_t *vm = malloc(sizeof(vm_t));
-    parsed_t *parsed;
+    parsed_t *parsed = parse_args(argc, args);
 
     if (vm == NULL)
         return NULL;
-    parsed = parse_args(argc, args);
     if (parsed == NULL)
         return free(vm), NULL;
     vm->champions = parsed->champions;
     vm->nb_champions = parsed->nb_champions;
     vm->dp_cyc = parsed->dump_cycle;
     normalize_champions(vm->nb_champions, vm->champions);
+    vm->log = parsed->log;
     vm->nb_alive = vm->nb_champions;
     vm->actual_cycle = 0;
     vm->cycle_to_die = CYCLE_TO_DIE;

@@ -12,8 +12,7 @@ int bytes_to_int(const byte_t *bytes, int size)
     int result = 0;
 
     for (int i = 0; i < size; i++) {
-        result <<= 8;
-        result |= bytes[i];
+        result = (result << 8) | bytes[i];
     }
     return result;
 }

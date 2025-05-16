@@ -19,7 +19,7 @@ void dump_memory(byte_t *memory)
     while (i < MEM_SIZE) {
         for (int e = 0; (e < 32) && i < MEM_SIZE; e++) {
             convert_to_16(memory[i], hexa);
-            my_printf("%s", hexa);
+            my_printf("%s ", hexa);
             i++;
         }
         my_printf("\n");

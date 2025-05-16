@@ -7,13 +7,25 @@
 
 #include "corewar.h"
 
-static void check_reg(int *value1, int *value2, process_t *proc)
+static void check_reg(int *value0, int *value1, int *value2, process_t *proc)
 {
+    if (proc->params_type[0] == T_REG) {
+        if (*value0 >= 1 && *value0 <= REG_NUMBER)
+            *value0 = proc->reg[(*value0) - 1];
+        else
+            *value0 = 0;
+    }
     if (proc->params_type[1] == T_REG) {
-        *value1 = proc->reg[(*value1) - 1];
+        if (*value1 >= 1 && *value1 <= REG_NUMBER)
+            *value1 = proc->reg[(*value1) - 1];
+        else
+            *value1 = 0;
     }
     if (proc->params_type[2] == T_REG) {
-        *value2 = proc->reg[(*value2) - 1];
+        if (*value2 >= 1 && *value2 <= REG_NUMBER)
+            *value2 = proc->reg[(*value2) - 1];
+        else
+            *value2 = 0;
     }
 }
 
@@ -36,26 +48,35 @@ void op_st(vm_t *vm, process_t *process)
     process->pc += inst_size;
 }
 
+static int compute_addr_and_write(vm_t *vm, process_t *process,
+    sti_values_t val)
+{
+    byte_t *bytes;
+    int addr = (process->pc + ((val.val2 + val.val3) % IDX_MOD)) % MEM_SIZE;
+
+    if (addr < 0)
+        addr += MEM_SIZE;
+    bytes = int_to_bytes(val.val1, REG_SIZE);
+    write_memory(vm->mem, addr, REG_SIZE, bytes);
+    free(bytes);
+    process->carry = (val.val1 == 0);
+    return addr;
+}
+
 void op_sti(vm_t *vm, process_t *process)
 {
     int inst_size = parse_param(vm, process);
-    int reg_value;
-    int value2 = process->params[1];
-    int value3 = process->params[2];
-    int addr = 0;
+    sti_values_t vals = { process->params[0], process->params[1],
+        process->params[2] };
+    int addr;
 
-    if (process->params[0] >= 1 && process->params[0] <= REG_NUMBER)
-        reg_value = process->reg[process->params[0] - 1];
     parse_indirect(vm, process);
-    check_reg(&value2, &value3, process);
-    addr = (process->pc + ((value2 + value3) % IDX_MOD)) % MEM_SIZE;
-    if (addr < 0)
-        addr += MEM_SIZE;
-    write_memory(vm->mem, addr, REG_SIZE, int_to_bytes(reg_value, REG_SIZE));
-    process->carry = (reg_value == 0);
-    if (vm->log)
+    check_reg(&vals.val1, &vals.val2, &vals.val3, process);
+    addr = compute_addr_and_write(vm, process, vals);
+    if (vm->log) {
         my_printf("\tsti: r%i (%i) -> addr (%i + %i) = %i, wr %i, carry %i\n",
-        process->params[0], reg_value, value2, value3, addr, reg_value,
-        process->carry);
+                process->params[0], vals.val1, vals.val2, vals.val3,
+                addr, vals.val1, process->carry);
+    }
     process->pc += inst_size;
 }

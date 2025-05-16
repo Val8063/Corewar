@@ -53,7 +53,7 @@ int parse_param(vm_t *vm, process_t *process)
     if ((op_code + 1) < 1 || 16 < (op_code + 1))
         return -1;
     if (op_tab[op_code].has_coding_byte == 1) {
-    decrypt_coding_byte(vm, process);
+        decrypt_coding_byte(vm, process);
         if (!check_param_types(op_code, process))
             return -1;
     } else {

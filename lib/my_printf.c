@@ -10,20 +10,15 @@
 
 static int my_putstr(char const *str)
 {
-    int count = 0;
-
     if (!str)
         return write(2, "(null)", 6), 0;
-    write(1, str, my_strlen(str));
-    return count;
+    return write(1, str, my_strlen(str));
 }
 
 static int my_put_nbr(int nb)
 {
     int count = 0;
 
-    if (!nb)
-        return 0;
     if (nb < 0) {
         my_putchar('-');
         my_put_nbr(- nb);

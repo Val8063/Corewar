@@ -83,4 +83,10 @@ typedef struct {
     char **argv;
 } parsed_t;
 
+typedef struct {
+    int val1;
+    int val2;
+    int val3;
+} sti_values_t;
+
 #endif

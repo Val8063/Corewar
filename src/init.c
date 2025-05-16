@@ -16,7 +16,9 @@ static byte_t *init_memory(vm_t *vm)
 
     if (!mem)
         return NULL;
-    my_memset(mem, 0, MEM_SIZE);
+    for (size_t i = 0; i < MEM_SIZE; i++) {
+        mem[i] = 0;
+    }
     for (int i = 0; i < vm->nb_process; i++) {
         proc = vm->process[i];
         champ = proc->src;

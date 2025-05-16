@@ -11,6 +11,7 @@ static void delete_process(vm_t *vm, int ind)
 {
     int i = 0;
 
+    free(vm->process[ind]);
     for (i = ind; i < vm->nb_process - 1; i++)
         vm->process[i] = vm->process[i + 1];
     vm->nb_process--;
@@ -60,6 +61,8 @@ static void turn(vm_t *vm, process_t *process)
         if (opcode >= 1 && opcode <= 16) {
             display_params(vm, process);
             op_func[opcode - 1](vm, process);
+        } else {
+            process->pc++;
         }
     }
     if (process->wait == -1 && 1 <= opcode && opcode <= 16) {
@@ -77,13 +80,15 @@ static void turn(vm_t *vm, process_t *process)
 void launch_vm(vm_t *vm)
 {
     while (vm->nb_alive > 1) {
+        if (vm->log)
+            my_printf("- - - - - - cycle %i - - - - - -\n", vm->actual_cycle);
         if (vm->actual_cycle % vm->cycle_to_die == 0)
             verify_live(vm, vm->champions, vm->actual_cycle);
         for (int i = 0; i < vm->nb_process; i++)
             turn(vm, vm->process[i]);
         if (vm->dp_cyc != -1 && vm->actual_cycle % vm->dp_cyc == 0)
             dump_memory(vm->mem);
-        vm->actual_cycle++;
+        (vm->actual_cycle)++;
     }
     my_printf("The player %i(%s) has won.\n",
             vm->process[0]->src->id, vm->process[0]->src->header.prog_name);

@@ -12,6 +12,6 @@ void op_aff(vm_t *vm, process_t *process)
     int inst_size = parse_param(vm, process);
     int character = process->reg[process->params[0] - 1];
 
-    my_printf("%c", (character & 0xFF) % 256);
+    my_printf("%c", character % 256);
     process->pc += inst_size;
 }

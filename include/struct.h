@@ -60,7 +60,18 @@ typedef void (*op_function_t)(vm_t *, process_t *);
 
 extern const op_function_t op_func[];
 
+typedef struct {
+    champion_t **champions;
+    int nb_champions;
+    int dump_cycle;
+    int log;
+    int max_champions;
+    int argc;
+    char **argv;
+} parsed_t;
+
 typedef struct vm_s {
+    parsed_t *parsed;
     champion_t **champions;
     int nb_champions;
     int nb_alive;
@@ -72,16 +83,6 @@ typedef struct vm_s {
     int cycle_to_die;
     byte_t *mem;
 } vm_t;
-
-typedef struct {
-    champion_t **champions;
-    int nb_champions;
-    int dump_cycle;
-    int log;
-    int max_champions;
-    int argc;
-    char **argv;
-} parsed_t;
 
 typedef struct {
     int val1;

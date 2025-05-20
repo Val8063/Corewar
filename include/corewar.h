@@ -50,7 +50,7 @@ vm_t *init_vm(char **args, int argc);
 // FREE
 
 void free_vm(vm_t *vm);
-
+void free_parsed(parsed_t *parsed);
 
 
 // RUN

@@ -128,12 +128,12 @@ parsed_t *parse_args(int argc, char **argv)
         return NULL;
     }
     if (init_args_struct(args, argc, argv) == -1)
-        return NULL;
+        return free(args), NULL;
     while (i < argc) {
         if (parse_arg(args, &i, &tmp_id, &tmp_addr) == -1)
-            return NULL;
+            return free_parsed(args), NULL;
     }
     if (parse_all_champions(args) == -1)
-        return NULL;
+        return free_parsed(args), NULL;
     return args;
 }

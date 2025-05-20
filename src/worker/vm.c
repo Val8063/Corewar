@@ -87,7 +87,7 @@ void launch_vm(vm_t *vm)
         for (int i = 0; i < vm->nb_process; i++)
             turn(vm, vm->process[i]);
         if (vm->dp_cyc != -1 && vm->actual_cycle % vm->dp_cyc == 0)
-            dump_memory(vm->mem);
+            return;
         (vm->actual_cycle)++;
     }
     my_printf("The player %i(%s) has won.\n",

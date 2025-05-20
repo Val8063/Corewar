@@ -85,7 +85,7 @@ vm_t *init_vm(char **args, int argc)
     vm->cycle_to_die = CYCLE_TO_DIE;
     vm->process = init_process(vm);
     vm->mem = init_memory(vm);
+    vm->parsed = parsed;
     my_printf("Nombre de champions : %i\n", vm->nb_champions);
-    my_printf("Nombre de process : %i\n", vm->nb_process);
     return vm;
 }

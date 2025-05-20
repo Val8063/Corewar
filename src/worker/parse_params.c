@@ -38,7 +38,7 @@ static int get_size(int op_code, int type)
         case T_IND:
             return IND_SIZE;
         case T_REG:
-            return REG_SIZE;
+            return 1;
         default:
             return 0;
     }

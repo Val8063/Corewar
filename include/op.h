@@ -50,7 +50,7 @@ indirect always relative (ld 1,r1 put what's in the address(1+pc) into r1
 */
     #define DIR_SIZE 4
     #define IND_SIZE 2
-    #define REG_SIZE 1
+    #define REG_SIZE DIR_SIZE
 
 /*
 ** header

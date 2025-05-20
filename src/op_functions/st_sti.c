@@ -35,14 +35,19 @@ void op_st(vm_t *vm, process_t *process)
     int param1 = process->params[0];
     int param2 = process->params[1];
     int start_addr = (process->pc + (param2 % IDX_MOD)) % MEM_SIZE;
-    byte_t *value = int_to_bytes(process->reg[param1 - 1], REG_SIZE);
+    byte_t *value = int_to_bytes(process->reg[param1 - 1], 4);
 
     if (process->params_type[1] == T_REG) {
         process->reg[param2 - 1] = process->reg[param1 - 1];
     } else {
         if (start_addr < 0)
             start_addr += MEM_SIZE;
-        write_memory(vm->mem, start_addr, REG_SIZE, value);
+        write_memory(vm->mem, start_addr, 4, value);
+    }
+    if (vm->log) {
+        my_printf("\tst: r%i (%i) -> addr (%i + %i) = %i, wr %i, carry %i\n",
+                param1, process->reg[param1 - 1], process->pc, param2,
+                start_addr, process->reg[param1 - 1], process->carry);
     }
     free(value);
     process->pc += inst_size;
@@ -56,8 +61,8 @@ static int compute_addr_and_write(vm_t *vm, process_t *process,
 
     if (addr < 0)
         addr += MEM_SIZE;
-    bytes = int_to_bytes(val.val1, REG_SIZE);
-    write_memory(vm->mem, addr, REG_SIZE, bytes);
+    bytes = int_to_bytes(val.val1, 4);
+    write_memory(vm->mem, addr, 4, bytes);
     free(bytes);
     process->carry = (val.val1 == 0);
     return addr;

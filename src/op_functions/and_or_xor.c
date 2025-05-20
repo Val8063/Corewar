@@ -27,7 +27,7 @@ void op_and(vm_t *vm, process_t *process)
 
     check_reg(&value1, &value2, process);
     result = value1 & value2;
-    process->reg[arg3 - 1] = result & 0xFF;
+    process->reg[arg3 - 1] = result;
     process->carry = (result == 0);
     process->pc += inst_size;
     if (vm->log)
@@ -45,7 +45,7 @@ void op_or(vm_t *vm, process_t *process)
 
     check_reg(&value1, &value2, process);
     result = value1 | value2;
-    process->reg[arg3 - 1] = result & 0xFF;
+    process->reg[arg3 - 1] = result;
     process->carry = (result == 0);
     process->pc += inst_size;
     if (vm->log)
@@ -63,7 +63,7 @@ void op_xor(vm_t *vm, process_t *process)
 
     check_reg(&value1, &value2, process);
     result = value1 ^ value2;
-    process->reg[arg3 - 1] = result & 0xFF;
+    process->reg[arg3 - 1] = result;
     process->carry = (result == 0);
     process->pc += inst_size;
     if (vm->log)

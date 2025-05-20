@@ -25,6 +25,16 @@ static void free_process(process_t *process)
     free(process);
 }
 
+void free_parsed(parsed_t *parsed)
+{
+    for (int i = 0; i < parsed->nb_champions; i++) {
+        free(parsed->champions[i]->file_name);
+        free(parsed->champions[i]);
+    }
+    free(parsed->champions);
+    free(parsed);
+}
+
 void free_vm(vm_t *vm)
 {
     int i;
@@ -41,5 +51,6 @@ void free_vm(vm_t *vm)
             free_process(vm->process[i]);
         free(vm->process);
     }
+    free(vm->mem);
     free(vm);
 }

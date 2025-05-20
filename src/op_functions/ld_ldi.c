@@ -25,10 +25,10 @@ void op_ld(vm_t *vm, process_t *process)
     if (1 <= process->params[1] && process->params[1] <= 16) {
         process->reg[process->params[1] - 1] = process->params[0];
         process->carry = (process->params[0] == 0);
+        if (vm->log)
+            my_printf("\tld: %i load dans r%i\n modification carry : %i\n",
+            process->params[0], process->params[1] - 1, process->carry);
     }
-    if (vm->log)
-        my_printf("\tld: %i load dans r%i\n modification carry : %i\n",
-        process->params[0], process->params[1] - 1, process->carry);
     process->pc += inst_size;
 }
 

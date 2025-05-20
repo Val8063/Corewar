@@ -14,7 +14,7 @@ void op_add(vm_t *vm, process_t *process)
     int reg2 = process->reg[process->params[1] - 1];
     int result = reg1 + reg2;
 
-    process->reg[process->params[2] - 1] = result & 0xFF;
+    process->reg[process->params[2] - 1] = result;
     process->carry = (result == 0);
     if (vm->log)
         my_printf("\tadd: r%i %i + r%i %i = r%i %i\n",
